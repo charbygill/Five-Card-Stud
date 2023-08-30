@@ -29,7 +29,7 @@ class Hand:
     def __init__(self):
         self.hand = []
         self.value = 0
-    def deal(Card card):
+    def deal(card):
         self.hand.append(card)
     def value(self, value):
         self.value = value;
