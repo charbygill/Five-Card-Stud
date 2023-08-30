@@ -34,5 +34,22 @@ random.shuffle(deck)
 
 for x in range(0,52):
     print(deck[x].face, deck[x].suite, sep='', end=' ')
-    if x % 7 == 6:
+    if x % 13 == 12:
         print()
+        
+print('\n')
+
+hands = []
+
+for x in range(0,6):
+    for y in range(0,5):
+        hands.append(deck[0])
+        deck.pop(0)
+        print(hands[x*5 + y].face, hands[x*5 + y].suite, sep='', end=' ')
+    print()
+    
+print('\n')
+
+for x in range(0,22):
+    print(deck[x].face, deck[x].suite, sep='', end=' ')
+print()
