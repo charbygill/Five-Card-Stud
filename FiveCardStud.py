@@ -1,24 +1,24 @@
 #Start by making a card class
 class Card:
     def __init__(self, face, suite):
-        if face < 11
-            if face == 1
+        if face < 11:
+            if face == 1:
                 self.face = 'A'
-            else
+            else:
                 self.face = face
-        if face == 11
+        if face == 11:
             self.face = 'J'
-        if face == 12
+        if face == 12:
             self.face = 'Q'
-        if face == 13
+        if face == 13:
             self.face = 'K'
-        if suite == 1
+        if suite == 1:
             self.suite = 'D'
-        if suite == 2
+        if suite == 2:
             self.suite = 'C'
-        if suite == 3
+        if suite == 3:
             self.suite = 'H'
-        if suite == 4
+        if suite == 4:
             self.suite = 'S'
         
 
