@@ -1,3 +1,5 @@
+import random
+
 #Start by making a card class
 class Card:
     def __init__(self, face, suite):
@@ -20,10 +22,15 @@ class Card:
             self.suite = 'H'
         if suite == 4:
             self.suite = 'S'
-        
+        self.face_int = face
+        self.suite_int = suite
 
 deck = []
 for x in range (1,5):
     for y in range(1,14):
         deck.append(Card(y,x))
-
+        
+random.shuffle(deck)
+        
+for card in deck:
+    print(card.face, card.suite, sep='')
