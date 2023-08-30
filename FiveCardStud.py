@@ -29,7 +29,7 @@ class Hand:
     def __init__(self):
         self.hand = []
         self.value = 0
-    def deal(card):
+    def deal(self, card):
         self.hand.append(card)
     def value(self, value):
         self.value = value;
@@ -58,7 +58,7 @@ for x in range(0,5):
         deck.pop(0)
         
 for hand in hands:
-    for card in hand:
+    for card in hand.hand:
         print(card.face, card.suite, sep='', end=' ')
     print()
     
