@@ -25,6 +25,15 @@ class Card:
         self.face_int = face
         self.suite_int = suite
 
+class Hand:
+    def __init__(self):
+        self.hand = []
+        self.value = 0
+    def deal(Card card):
+        self.hand.append(card)
+    def value(self, value):
+        self.value = value;
+
 deck = []
 for x in range (1,5):
     for y in range(1,14):
@@ -41,11 +50,16 @@ print('\n')
 
 hands = []
 
-for x in range(0,6):
-    for y in range(0,5):
-        hands.append(deck[0])
+for x in range(0,5):
+    for y in range(0,6):
+        if x == 0:
+            hands.append(Hand())
+        hands[y].deal(deck[0])
         deck.pop(0)
-        print(hands[x*5 + y].face, hands[x*5 + y].suite, sep='', end=' ')
+        
+for hand in hands:
+    for card in hand:
+        print(card.face, card.suite, sep='', end=' ')
     print()
     
 print('\n')
