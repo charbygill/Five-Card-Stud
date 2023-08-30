@@ -31,6 +31,8 @@ for x in range (1,5):
         deck.append(Card(y,x))
         
 random.shuffle(deck)
-        
-for card in deck:
-    print(card.face, card.suite, sep='')
+
+for x in range(0,52):
+    print(deck[x].face, deck[x].suite, sep='', end=' ')
+    if x % 7 == 6:
+        print()
