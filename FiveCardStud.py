@@ -1,5 +1,5 @@
 #Start by making a card class
 class Card:
-    face = ''
-    suite = ''
-
+    def __init__(self, face, suite):
+        self.face = face
+        self.suite = suite
