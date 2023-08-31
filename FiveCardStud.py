@@ -5,15 +5,18 @@ class Card:
     def __init__(self, face, suite):
         if face < 11:
             if face == 1:
-                self.face = 'A'
+                self.face = ' A'
             else:
-                self.face = face
+                if face == 10:
+                    self.face = face
+                else:
+                    self.face = ' ' + str(face)
         if face == 11:
-            self.face = 'J'
+            self.face = ' J'
         if face == 12:
-            self.face = 'Q'
+            self.face = ' Q'
         if face == 13:
-            self.face = 'K'
+            self.face = ' K'
         if suite == 1:
             self.suite = 'D'
         if suite == 2:
