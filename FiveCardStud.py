@@ -27,6 +27,12 @@ class Card:
             self.suite = 'S'
         self.face_int = face
         self.suite_int = suite
+        self.flagged = False
+        self.high_card = False
+    def flag(self):
+        self.flagged = True
+    def set_high_card(self):
+        self.high_card = True
 
 class Hand:
     def __init__(self):
