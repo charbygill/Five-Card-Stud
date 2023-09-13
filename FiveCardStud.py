@@ -62,11 +62,10 @@ class Poker_Table:
             print()
         print('\n')
     def rank_hands(self):
-        hands_clone = self.hands
-        for hand in hands_clone:
+        for hand in self.hands:
             sorted_hand = hand.sort()
-        
-        
+            temp = [[]]
+            
 
 class Hand:
     def __init__(self):
@@ -74,7 +73,7 @@ class Hand:
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
-        sorted_hand = self.hand
+        sorted_hand: Array = self.hand.copy()
         n = len(sorted_hand)
         swapped = False
         for i in range(n-1):
@@ -84,7 +83,7 @@ class Hand:
                     sorted_hand[j], sorted_hand[j + 1] = sorted_hand[j + 1], sorted_hand[j]
             if not swapped:
                 return sorted_hand
-    def rank(self):
+    #def rank(self):
 
 
 table = Poker_Table()
@@ -92,6 +91,4 @@ table.print_deck(13)
 table.deal()
 table.print_hands()
 table.print_deck()
-
-
-
+table.rank_hands()
