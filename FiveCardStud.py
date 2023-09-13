@@ -37,11 +37,8 @@ class Card:
 class Hand:
     def __init__(self):
         self.hand = []
-        self.value = 0
     def deal(self, card):
         self.hand.append(card)
-    def value(self, value):
-        self.value = value;
 
 deck = []
 for x in range (1,5):
