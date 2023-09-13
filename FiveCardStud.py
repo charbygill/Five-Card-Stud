@@ -34,42 +34,47 @@ class Card:
     def set_high_card(self):
         self.high_card = True
 
+class Table:
+    def __init__(self):
+        self.hands = []
+        self.deck = []
+        for x in range (1,5):
+            for y in range(1,14):
+                self.deck.append(Card(y,x))
+        random.shuffle(self.deck)
+    def deal(self):
+        for x in range(0,5):
+            for y in range(0,6):
+                if x == 0:
+                    self.hands.append(Hand())
+                self.hands[y].deal(self.deck[0])
+                self.deck.pop(0)
+    def print_deck(self):
+        for x in range(0,len(self.deck)):
+            print(self.deck[x].face, self.deck[x].suite, sep='', end=' ')
+            if x % 13 == 12:
+                print()
+        print('\n')
+    def print_hands(self):
+        for hand in self.hands:
+            for card in hand.hand:
+                print(card.face, card.suite, sep='', end=' ')
+            print()
+        print('\n')
+        
+
 class Hand:
     def __init__(self):
         self.hand = []
     def deal(self, card):
         self.hand.append(card)
 
-deck = []
-for x in range (1,5):
-    for y in range(1,14):
-        deck.append(Card(y,x))
-        
-random.shuffle(deck)
 
-for x in range(0,52):
-    print(deck[x].face, deck[x].suite, sep='', end=' ')
-    if x % 13 == 12:
-        print()
-        
-print('\n')
+table = Table()
+table.print_deck()
+table.deal()
+table.print_hands()
+table.print_deck()
 
-hands = []
 
-for x in range(0,5):
-    for y in range(0,6):
-        if x == 0:
-            hands.append(Hand())
-        hands[y].deal(deck[0])
-        deck.pop(0)
-        
-for hand in hands:
-    for card in hand.hand:
-        print(card.face, card.suite, sep='', end=' ')
-    print()
-    
-print('\n')
 
-for x in range(0,22):
-    print(deck[x].face, deck[x].suite, sep='', end=' ')
-print()
