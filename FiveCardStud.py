@@ -34,7 +34,7 @@ class Card:
     def set_high_card(self):
         self.high_card = True
 
-class Table:
+class Poker_Table:
     def __init__(self):
         self.hands = []
         self.deck = []
@@ -49,10 +49,10 @@ class Table:
                     self.hands.append(Hand())
                 self.hands[y].deal(self.deck[0])
                 self.deck.pop(0)
-    def print_deck(self):
+    def print_deck(self, col):
         for x in range(0,len(self.deck)):
             print(self.deck[x].face, self.deck[x].suite, sep='', end=' ')
-            if x % 13 == 12:
+            if x % col == col - 1:
                 print()
         print('\n')
     def print_hands(self):
@@ -61,6 +61,8 @@ class Table:
                 print(card.face, card.suite, sep='', end=' ')
             print()
         print('\n')
+    #def rank_hands(self):
+        
         
 
 class Hand:
@@ -70,11 +72,11 @@ class Hand:
         self.hand.append(card)
 
 
-table = Table()
-table.print_deck()
+table = Poker_Table()
+table.print_deck(13)
 table.deal()
 table.print_hands()
-table.print_deck()
+table.print_deck(52)
 
 
 
