@@ -38,9 +38,11 @@ class Poker_Table:
     def __init__(self):
         self.hands = []
         self.deck = []
-        for x in range (1,5):
-            for y in range(1,14):
-                self.deck.append(Card(x,y))
+        for x in range (1,14):
+            #for y in range(1,14):
+            self.deck.append(Card(1,1))
+        for x in range (14, 53):
+            self.deck.append(Card(x%4+10,1))
         random.shuffle(self.deck)
     def deal(self):
         for x in range(0,5):
@@ -67,8 +69,12 @@ class Poker_Table:
             temp = []
             flush = 0
             straight = True
+            ace = False
             prev_card_int = None
             for card in sorted_hand:
+                if card.face_int == 1:
+                    ace = True
+                
                 if flush != 0 and flush != 5:
                     if card.suite_int != flush:
                         flush = 5
@@ -78,10 +84,10 @@ class Poker_Table:
                 if prev_card_int == None:
                     prev_card_int = card.face_int
                 elif straight:
-                    if prev_card_int + 1 != card.face_int:
-                        straight = False
-                    else:
+                    if prev_card_int + 1 == card.face_int or (prev_card_int == 1 and card.face_int == 10):
                         prev_card_int = card.face_int
+                    else:
+                        straight = False
                 
                 if len(temp) == 0:
                     temp.append([])
@@ -108,7 +114,10 @@ class Poker_Table:
             elif len(temp) == 4:
                 print('Pair!')
             if flush != 5 and straight:
-                print('Straight Flush!')
+                if ace and prev_card_int == 13:
+                    print('Royal Straight Flush!')
+                else:
+                    print('Straight Flush!')
             elif flush != 5:
                 print ('Flush!')
             elif straight:
@@ -117,6 +126,7 @@ class Poker_Table:
 class Hand:
     def __init__(self):
         self.hand = []
+        self.value = 0
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
@@ -133,8 +143,8 @@ class Hand:
             if not swapped:
                 return sorted_hand
         return sorted_hand
-    #def rank(self):
-
+    def kicker(self, card):
+        self.kicker = card
 
 table = Poker_Table()
 table.print_deck(13)
