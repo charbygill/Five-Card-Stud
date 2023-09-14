@@ -64,8 +64,53 @@ class Poker_Table:
     def rank_hands(self):
         for hand in self.hands:
             sorted_hand = hand.sort()
-            temp = [[]]
-            
+            temp = []
+            flush = 0
+            straight = True
+            prev_card_int = None
+            for card in sorted_hand:
+                if flush != 0 and flush != 5:
+                    if card.suite_int != flush:
+                        flush = 5
+                elif flush == 0:
+                    flush = card.suite_int
+
+                if prev_card_int == None:
+                    prev_card_int = card.face_int
+                elif straight:
+                    if prev_card_int + 1 != card.face_int:
+                        straight = False
+                
+                if len(temp) == 0:
+                    temp.append([])
+                    temp[0].append(card)
+                else:
+                    inserted = False
+                    for x in temp:
+                        if x[0].face_int == card.face_int:
+                            x.append(card)
+                            inserted = True
+                    if not inserted:
+                        temp.append([])
+                        temp[len(temp)-1].append(card)
+            if len(temp) == 2:
+                if len(temp[0]) == 1 or len(temp[0]) == 4:
+                    print('Four of a kind!')
+                else:
+                    print ('Full House!')
+            elif len(temp) == 3:
+                if len(temp[0]) == 3 or len(temp[1]) == 3 or len(temp[2]) == 3:
+                    print('Three of a kind!')
+                else:
+                    print('Two pair!')
+            elif len(temp) == 4:
+                print('Pair!')
+            if flush != 5 and straight:
+                print('Straight Flush!')
+            elif flush != 5:
+                print ('Flush!')
+            elif straight:
+                print('Straight')
 
 class Hand:
     def __init__(self):
@@ -73,7 +118,9 @@ class Hand:
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
-        sorted_hand: Array = self.hand.copy()
+        sorted_hand = []
+        for card in self.hand:
+            sorted_hand.append(card)
         n = len(sorted_hand)
         swapped = False
         for i in range(n-1):
@@ -83,6 +130,7 @@ class Hand:
                     sorted_hand[j], sorted_hand[j + 1] = sorted_hand[j + 1], sorted_hand[j]
             if not swapped:
                 return sorted_hand
+        return sorted_hand
     #def rank(self):
 
 
