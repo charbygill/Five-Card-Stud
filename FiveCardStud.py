@@ -131,7 +131,7 @@ class Poker_Table:
                 if sorted_hands[j].value > sorted_hands[j + 1].value:
                     swapped = True
                     sorted_hands[j], sorted_hands[j + 1] = sorted_hands[j + 1], sorted_hands[j]
-                elif sorted_hands[j].value == sorted_hands[j + 1].value
+                elif sorted_hands[j].value == sorted_hands[j + 1].value:
                     #group the cards and rank strength of groups[len(groups)-1][len(groups[len(groups)-1])-1]
                     
             if not swapped:
