@@ -64,42 +64,47 @@ class Poker_Table:
         for hand in self.hands:
             sorted_hand = hand.sort()
             temp = []
+            groups = []
             flush = 0
             straight = True
             ace = False
             prev_card_int = None
-            for card in sorted_hand:
-                if card.face_int == 14:
+            for x in range(0,5):
+                if sorted_hand[x].face_int == 14:
                     ace = True
                 
                 if flush != 0 and flush != 5:
-                    if card.suite_int != flush:
+                    if sorted_hand[x].suite_int != flush:
                         flush = 5
                 elif flush == 0:
-                    flush = card.suite_int
+                    flush = sorted_hand[x].suite_int
 
                 if prev_card_int == None:
-                    prev_card_int = card.face_int
+                    prev_card_int = sorted_hand[x].face_int
                 elif straight:
-                    if prev_card_int + 1 == card.face_int or (prev_card_int == 5 and card.face_int == 14):
-                        prev_card_int = card.face_int
+                    if prev_card_int + 1 == sorted_hand[x].face_int or (prev_card_int == 5 and sorted_hand[x].face_int == 14):
+                        prev_card_int = sorted_hand[x].face_int
                     else:
                         straight = False
                 
                 if len(temp) == 0:
                     temp.append([])
-                    temp[0].append(card)
-                    hand.kicker = card
+                    temp[0].append(sorted_hand[x])
                 else:
                     inserted = False
-                    for x in temp:
-                        if x[0].face_int == card.face_int:
-                            x.append(card)
+                    for y in temp:
+                        if y[0].face_int == sorted_hand[x].face_int:
+                            y.append(sorted_hand[x])
                             inserted = True
+                            if x == 4:
+                                if len(groups) == 0:
+                                    groups.append([])
+                                    groups[0].append([])
+                                    groups[0][0].append(y)
                     if not inserted:
                         temp.append([])
-                        temp[len(temp)-1].append(card)
-                        hand.kicker = card
+                        temp[len(temp)-1].append(sorted_hand[x])
+                
             if len(temp) == 2:
                 if len(temp[0]) == 1 or len(temp[0]) == 4:
                     hand.value = 3
@@ -127,7 +132,7 @@ class Hand:
     def __init__(self):
         self.hand = []
         self.value = 10
-        self.kicker = None
+        self.groups = None
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
@@ -151,3 +156,4 @@ table.deal()
 table.print_hands()
 table.print_deck()
 table.rank_hands()
+#table.order_hands()
