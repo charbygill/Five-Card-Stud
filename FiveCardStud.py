@@ -131,19 +131,19 @@ class Poker_Table:
                 if sorted_hands[j].value > sorted_hands[j + 1].value:
                     swapped = True
                     sorted_hands[j], sorted_hands[j + 1] = sorted_hands[j + 1], sorted_hands[j]
-                elif sorted_hands[j].value == sorted_hands[j + 1].value:
+                #elif sorted_hands[j].value == sorted_hands[j + 1].value:
                     #group the cards and rank strength of groups[len(groups)-1][len(groups[len(groups)-1])-1]
-                    
             if not swapped:
                 self.hands = sorted_hands
         self.hands = sorted_hands
+    #def tiebreak(self, hand_1, hand_2):
+        
 
 class Hand:
     def __init__(self):
         self.hand = []
         self.value = 10
         self.groups = None
-        self.tiebreak_compare = False
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
