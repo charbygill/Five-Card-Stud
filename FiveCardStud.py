@@ -40,7 +40,7 @@ class Poker_Table:
         self.deck = []
         for x in range (1,5):
             for y in range(1,14):
-                self.deck.append(Card(y,x))
+                self.deck.append(Card(x,y))
         random.shuffle(self.deck)
     def deal(self):
         for x in range(0,5):
@@ -80,6 +80,8 @@ class Poker_Table:
                 elif straight:
                     if prev_card_int + 1 != card.face_int:
                         straight = False
+                    else:
+                        prev_card_int = card.face_int
                 
                 if len(temp) == 0:
                     temp.append([])
@@ -110,7 +112,7 @@ class Poker_Table:
             elif flush != 5:
                 print ('Flush!')
             elif straight:
-                print('Straight')
+                print('Straight!')
 
 class Hand:
     def __init__(self):
