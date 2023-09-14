@@ -64,6 +64,7 @@ class Poker_Table:
         for hand in self.hands:
             sorted_hand = hand.sort()
             temp = []
+            groups = []
             flush = 0
             straight = True
             ace = False
@@ -120,6 +121,9 @@ class Poker_Table:
                 hand.value = 5
             elif straight:
                 hand.value = 6
+            for y in range(0,4):
+                for z in temp:
+                    
     def order_hands(self):
         sorted_hands = []
         for hand in self.hands:
