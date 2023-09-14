@@ -4,19 +4,18 @@ import random
 class Card:
     def __init__(self, face, suite):
         if face < 11:
-            if face == 1:
-                self.face = ' A'
+            if face == 10:
+                self.face = face
             else:
-                if face == 10:
-                    self.face = face
-                else:
-                    self.face = ' ' + str(face)
+                self.face = ' ' + str(face)
         if face == 11:
             self.face = ' J'
         if face == 12:
             self.face = ' Q'
         if face == 13:
             self.face = ' K'
+        if face == 14:
+            self.face = ' A'
         if suite == 1:
             self.suite = 'D'
         if suite == 2:
@@ -38,11 +37,9 @@ class Poker_Table:
     def __init__(self):
         self.hands = []
         self.deck = []
-        for x in range (1,14):
-            #for y in range(1,14):
-            self.deck.append(Card(1,1))
-        for x in range (14, 53):
-            self.deck.append(Card(x%4+10,1))
+        for x in range (1,5):
+            for y in range(2,15):
+                self.deck.append(Card(y,x))
         random.shuffle(self.deck)
     def deal(self):
         for x in range(0,5):
@@ -72,7 +69,7 @@ class Poker_Table:
             ace = False
             prev_card_int = None
             for card in sorted_hand:
-                if card.face_int == 1:
+                if card.face_int == 14:
                     ace = True
                 
                 if flush != 0 and flush != 5:
@@ -84,7 +81,7 @@ class Poker_Table:
                 if prev_card_int == None:
                     prev_card_int = card.face_int
                 elif straight:
-                    if prev_card_int + 1 == card.face_int or (prev_card_int == 1 and card.face_int == 10):
+                    if prev_card_int + 1 == card.face_int or (prev_card_int == 5 and card.face_int == 14):
                         prev_card_int = card.face_int
                     else:
                         straight = False
@@ -92,6 +89,7 @@ class Poker_Table:
                 if len(temp) == 0:
                     temp.append([])
                     temp[0].append(card)
+                    hand.kicker = card
                 else:
                     inserted = False
                     for x in temp:
@@ -101,32 +99,35 @@ class Poker_Table:
                     if not inserted:
                         temp.append([])
                         temp[len(temp)-1].append(card)
+                        hand.kicker = card
             if len(temp) == 2:
                 if len(temp[0]) == 1 or len(temp[0]) == 4:
-                    print('Four of a kind!')
+                    hand.value = 3
                 else:
-                    print ('Full House!')
+                    hand.value = 4
             elif len(temp) == 3:
                 if len(temp[0]) == 3 or len(temp[1]) == 3 or len(temp[2]) == 3:
-                    print('Three of a kind!')
+                    hand.value = 7
                 else:
-                    print('Two pair!')
+                    hand.value = 8
             elif len(temp) == 4:
-                print('Pair!')
+                hand.value = 9
             if flush != 5 and straight:
-                if ace and prev_card_int == 13:
-                    print('Royal Straight Flush!')
+                if ace and prev_card_int == 5:
+                    hand.value = 2
                 else:
-                    print('Straight Flush!')
+                    hand.value = 1
             elif flush != 5:
-                print ('Flush!')
+                hand.value = 5
             elif straight:
-                print('Straight!')
+                hand.value = 6
+            print(hand.value)
 
 class Hand:
     def __init__(self):
         self.hand = []
-        self.value = 0
+        self.value = 10
+        self.kicker = None
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
@@ -143,8 +144,6 @@ class Hand:
             if not swapped:
                 return sorted_hand
         return sorted_hand
-    def kicker(self, card):
-        self.kicker = card
 
 table = Poker_Table()
 table.print_deck(13)
