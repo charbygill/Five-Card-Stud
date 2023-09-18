@@ -149,9 +149,9 @@ class Poker_Table:
         
         return self.tiebreak_recursive(temp_1,temp_2)
     def tiebreak_recursive(self, hand_1, hand_2):
-        if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])]) - 1].face_int > hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])]) - 1].face_int:
+        if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int:
             return True
-        elif hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])]) - 1].face_int == hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])]) - 1].face_int:
+        elif hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int == hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int:
             if not len(hand_1[len(hand_1) - 1][0]) == 1:
                 if len(hand_1[len(hand_1) - 1]) == 1:
                     hand_1.pop(len(hand_1) - 1)
@@ -161,7 +161,7 @@ class Poker_Table:
                     hand_2[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]))
                 return self.tiebreak_recursive(hand_1,hand_2)
             else:
-                if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])]) - 1].suite_int == hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])]) - 1].suite_int:
+                if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].suite_int:
                     return True
         return False
             
