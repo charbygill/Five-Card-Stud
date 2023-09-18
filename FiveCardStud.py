@@ -1,5 +1,4 @@
 import random
-import sys
 
 #Start by making a card class
 class Card:
@@ -175,8 +174,8 @@ class Poker_Table:
         temp_1 = hand_1.groups.copy()
         temp_2 = hand_2.groups.copy()
         
-        return self.tiebreak_recursive(temp_1,temp_2,hand_1.low_ace)
-    def tiebreak_recursive(self, hand_1, hand_2, low_ace):
+        return self.tiebreak_recursive(temp_1,temp_2)
+    def tiebreak_recursive(self, hand_1, hand_2):
         if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int:
             return True
         elif hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int == hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int:
@@ -189,10 +188,10 @@ class Poker_Table:
                     hand_2[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]))
                 return self.tiebreak_recursive(hand_1,hand_2)
             else:
-                if not low_ace:
-                    if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int:
-                        return True
-                else:
+                #if not low_ace:
+                    #if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int:
+                        #return True
+                #else:
                     if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int:
                         return True
         return False
@@ -203,7 +202,6 @@ class Hand:
         self.value = 0
         self.sorted = None
         self.groups = None
-        self.low_ace = False
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
