@@ -64,7 +64,6 @@ class Poker_Table:
         for hand in self.hands:
             sorted_hand = hand.sort()
             temp = []
-            groups = []
             flush = 0
             straight = True
             ace = False
@@ -99,7 +98,7 @@ class Poker_Table:
                     if not inserted:
                         temp.append([])
                         temp[len(temp)-1].append(sorted_hand[x])
-            hand.groups = temp
+            hand.sorted = temp
             if len(temp) == 2:
                 if len(temp[0]) == 1 or len(temp[0]) == 4:
                     hand.value = 3
@@ -121,9 +120,6 @@ class Poker_Table:
                 hand.value = 5
             elif straight:
                 hand.value = 6
-            for y in range(0,4):
-                for z in temp:
-                    
     def order_hands(self):
         sorted_hands = []
         for hand in self.hands:
@@ -135,18 +131,29 @@ class Poker_Table:
                 if sorted_hands[j].value > sorted_hands[j + 1].value:
                     swapped = True
                     sorted_hands[j], sorted_hands[j + 1] = sorted_hands[j + 1], sorted_hands[j]
-                #elif sorted_hands[j].value == sorted_hands[j + 1].value:
-                    #group the cards and rank strength of groups[len(groups)-1][len(groups[len(groups)-1])-1]
+                elif sorted_hands[j].value == sorted_hands[j + 1].value:
+                    if self.tiebreak(sorted_hands[j], sorted_hands[j + 1]):
+                        swapped = True
+                        sorted_hands[j], sorted_hands[j + 1] = sorted_hands[j + 1], sorted_hands[j]
             if not swapped:
                 self.hands = sorted_hands
         self.hands = sorted_hands
-    #def tiebreak(self, hand_1, hand_2):
+    def tiebreak(self, hand_1, hand_2):
+        if hand_1.groups == None:
+            hand_1.group()
+        if hand_2.groups == None:
+            hand_2.group()
+            
+        temp_1 = hand_1.groups.copy()
+        temp_2 = hand_2.groups.copy()
         
-
+        return tiebreak_recursive(temp_1,temp_2)
+        
 class Hand:
     def __init__(self):
         self.hand = []
         self.value = 10
+        self.sorted = None
         self.groups = None
     def deal(self, card):
         self.hand.append(card)
@@ -164,6 +171,32 @@ class Hand:
             if not swapped:
                 return sorted_hand
         return sorted_hand
+    def group(self):
+        temp = []
+        if len(self.sorted) == 5:
+            temp.append([])
+            for card in self.sorted:
+                temp[0].append(card)
+        else:
+            temp.append([])
+            temp.append([])
+            low = 2;
+            for card in self.sorted:
+                if len(card) < low:
+                    low = len(card)
+            if low == 1:
+                for card in self.sorted:
+                    if len(card) == 1:
+                        temp[0].append(card)
+                    else:
+                        temp[1].append(card)
+            else:
+                for card in self.sorted:
+                    if len(card) == 2:
+                        temp[0].append(card)
+                    else:
+                        temp[1].append(card)
+        self.groups = temp
         
 table = Poker_Table()
 table.print_deck(13)
