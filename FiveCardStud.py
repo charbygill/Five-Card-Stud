@@ -82,6 +82,8 @@ class Poker_Table:
                 print("Pair")
             elif hand.value == 10:
                 print("High Card")
+            else:
+                print()
         print('\n')
     def rank_hands(self):
         for hand in self.hands:
@@ -184,15 +186,11 @@ class Poker_Table:
                     hand_1.pop(len(hand_1) - 1)
                     hand_2.pop(len(hand_1) - 1)
                 else:
-                    hand_1[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]))
-                    hand_2[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]))
+                    hand_1[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]) - 1)
+                    hand_2[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]) - 1)
                 return self.tiebreak_recursive(hand_1,hand_2)
             else:
-                #if not low_ace:
-                    #if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int:
-                        #return True
-                #else:
-                    if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 2].suite_int:
+                if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].suite_int:
                         return True
         return False
             
