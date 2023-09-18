@@ -55,13 +55,14 @@ class Poker_Table:
                     if not found:
                         if not self.duplicate:
                             self.duplicate = Hand()
+                            self.duplicate.deal(new_card)
                         else:
                             duplicated = False
                             for card in self.duplicate.hand:
                                 if card.face_int == new_card.face_int and card.suite_int == new_card.suite_int:
                                     duplicated = True
                             if not duplicated:
-                                self.duplicate.hand.append(new_card)
+                                self.duplicate.deal(new_card)
     def input_card(self, face, suite):
         if face == "A":
             face_int = 14
@@ -102,7 +103,7 @@ class Poker_Table:
             for card in hand.hand:
                 print(card.face, card.suite, sep='', end=' ')
             if not hand.value == 0:
-                print("---", hand.value_str)
+                print("---", hand.value_str, end='')
             print()
         print('\n')
     def rank_hands(self):
@@ -215,7 +216,7 @@ class Poker_Table:
                 else:
                     hand_1[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]) - 1)
                     hand_2[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]) - 1)
-                return self.tiebreak_recursive(hand_1,hand_2)
+                return self.tiebreak_recursive(hand_1,hand_2,ref_1,ref_2)
             else:
                 if not (ref_1.low_ace and ref_2.low_ace):
                     if hand_1[-1][-1][-1].suite_int < hand_2[-1][-1][-1].suite_int:
@@ -302,7 +303,7 @@ if not table.duplicate:
 else:
     print("*** ERROR - DUPLICATED CARD(S) FOUND IN DECK ***")
     print("*** DUPLICATE(S): ", sep="", end="")
-    table.duplicate.sort()
-    for card in table.duplicate.hand:
-        print(card.face,card.suite, sep=" ", end="")
+    duplicates = table.duplicate.sort()
+    for card in duplicates:
+        print(card.face,card.suite, sep="", end=" ")
     print(" ***")
