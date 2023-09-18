@@ -55,12 +55,13 @@ class Poker_Table:
                     if not found:
                         if not self.duplicate:
                             self.duplicate = Hand()
-                        duplicated = False
-                        for card in self.duplicate:
-                            if card.face_int == new_card.face_int and card.suite_int == new_card.suite_int):
-                                duplicated = True
-                        if not duplicated:
-                            self.duplicate.hand.append(new_card)
+                        else:
+                            duplicated = False
+                            for card in self.duplicate.hand:
+                                if card.face_int == new_card.face_int and card.suite_int == new_card.suite_int:
+                                    duplicated = True
+                            if not duplicated:
+                                self.duplicate.hand.append(new_card)
     def input_card(self, face, suite):
         if face == "A":
             face_int = 14
