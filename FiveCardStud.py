@@ -1,6 +1,6 @@
 import random
+import sys
 
-#Start by making a card class
 class Card:
     def __init__(self, face, suite):
         if face < 11:
@@ -26,23 +26,56 @@ class Card:
             self.suite = 'S'
         self.face_int = face
         self.suite_int = suite
-        self.flagged = False
-        self.high_card = False
-    def flag(self):
-        self.flagged = True
-    def set_high_card(self):
-        self.high_card = True
 
 class Poker_Table:
     def __init__(self):
         self.hands = []
         self.deck = []
+        self.duplicate = None
         for x in range (1,5):
             for y in range(2,15):
                 self.deck.append(Card(y,x))
         random.shuffle(self.deck)
-    #def input(self):
-        
+    def input_hands(self):
+        with open(sys.argv[1], 'r') as my_file:
+            lines = my_file.readlines()
+            for line in lines:
+                self.hands.append(Hand())
+                line = line.strip()
+                cards = line.split(",")
+                for card in cards:
+                    str = card.replace(" ", "")
+                    new_card = self.input_card(str[-2],str[-1])
+                    self.hands[-1].deal(new_card)
+                    found = False
+                    for search_card in self.deck:
+                        if search_card.face_int == new_card.face_int and search_card.suite_int == new_card.suite_int:
+                            self.deck.pop(self.deck.index(search_card))
+                            found = True
+                    if not found:
+                        self.duplicate = new_card
+    def input_card(self, face, suite):
+        if face == "A":
+            face_int = 14
+        elif face == "K":
+            face_int = 13
+        elif face == "Q":
+            face_int = 12
+        elif face == "J":
+            face_int = 11
+        elif face == "0":
+            face_int = 10
+        else:
+            face_int = int(face)
+        if suite == 'D':
+            suite_int = 1
+        elif suite == 'C':
+            suite_int = 2
+        elif suite == 'H':
+            suite_int = 3
+        else:
+            suite_int = 4
+        return Card(face_int, suite_int)
     def deal(self):
         for x in range(0,5):
             for y in range(0,6):
@@ -61,29 +94,7 @@ class Poker_Table:
             for card in hand.hand:
                 print(card.face, card.suite, sep='', end=' ')
             if not hand.value == 0:
-                print("---", end=' ')
-            if hand.value == 1:
-                print("Royal Straight Flush")
-            elif hand.value == 2:
-                print("Straight Flush")
-            elif hand.value == 3:
-                print("Four of a Kind")
-            elif hand.value == 4:
-                print("Full House")
-            elif hand.value == 5:
-                print("Flush")
-            elif hand.value == 6:
-                print("Straight")
-            elif hand.value == 7:
-                print("Three of a Kind")
-            elif hand.value == 8:
-                print("Two Pair")
-            elif hand.value == 9:
-                print("Pair")
-            elif hand.value == 10:
-                print("High Card")
-            else:
-                print()
+                print("---", hand.value_str)
         print('\n')
     def rank_hands(self):
         for hand in self.hands:
@@ -91,12 +102,8 @@ class Poker_Table:
             temp = []
             flush = 0
             straight = True
-            ace = False
             prev_card_int = None
             for x in range(0,5):
-                if sorted_hand[x].face_int == 14:
-                    ace = True
-                
                 if flush != 0 and flush != 5:
                     if sorted_hand[x].suite_int != flush:
                         flush = 5
@@ -109,7 +116,8 @@ class Poker_Table:
                     if prev_card_int + 1 == sorted_hand[x].face_int or (prev_card_int == 5 and sorted_hand[x].face_int == 14):
                         if prev_card_int == 5 and sorted_hand[x].face_int == 14:
                             hand.low_ace = True
-                        prev_card_int = sorted_hand[x].face_int
+                        if not x == 4:
+                            prev_card_int = sorted_hand[x].face_int
                     else:
                         straight = False
                 
@@ -129,26 +137,36 @@ class Poker_Table:
             if len(temp) == 2:
                 if len(temp[0]) == 1 or len(temp[0]) == 4:
                     hand.value = 3
+                    hand.value_str = "Four of a Kind"
                 else:
                     hand.value = 4
+                    hand.value_str = "Full House"
             elif len(temp) == 3:
                 if len(temp[0]) == 3 or len(temp[1]) == 3 or len(temp[2]) == 3:
                     hand.value = 7
+                    hand.value_str = "Three of a Kind"
                 else:
                     hand.value = 8
+                    hand.value_str = "Two Pair"
             elif len(temp) == 4:
                 hand.value = 9
+                hand.value_str = "Pair"
             if flush != 5 and straight:
-                if ace and prev_card_int == 5:
+                if hand.low_ace and prev_card_int == 5:
                     hand.value = 2
+                    hand.value_str = "Straight Flush"
                 else:
                     hand.value = 1
+                    hand.value_str = "Royal Straight Flush"
             elif flush != 5:
                 hand.value = 5
+                hand.value_str = "Flush"
             elif straight:
                 hand.value = 6
+                hand.value_str = "Straight"
             if hand.value == 0:
                 hand.value = 10
+                hand.value_str = "High Card"
     def order_hands(self):
         sorted_hands = []
         for hand in self.hands:
@@ -176,13 +194,13 @@ class Poker_Table:
         temp_1 = hand_1.groups.copy()
         temp_2 = hand_2.groups.copy()
         
-        return self.tiebreak_recursive(temp_1,temp_2)
-    def tiebreak_recursive(self, hand_1, hand_2):
-        if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int:
+        return self.tiebreak_recursive(temp_1,temp_2,hand_1,hand_2)
+    def tiebreak_recursive(self, hand_1, hand_2, ref_1, ref_2):
+        if hand_1[-1][-1][-1].face_int < hand_2[-1][-1][-1].face_int:
             return True
-        elif hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int == hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].face_int:
-            if not len(hand_1[len(hand_1) - 1][0]) == 1:
-                if len(hand_1[len(hand_1) - 1]) == 1:
+        elif hand_1[-1][-1][-1].face_int == hand_2[-1][-1][-1].face_int:
+            if not len(hand_1[-1][0]) == 1:
+                if len(hand_1[-1]) == 1:
                     hand_1.pop(len(hand_1) - 1)
                     hand_2.pop(len(hand_1) - 1)
                 else:
@@ -190,7 +208,11 @@ class Poker_Table:
                     hand_2[len(hand_1) - 1].pop(len(hand_1[len(hand_1) - 1]) - 1)
                 return self.tiebreak_recursive(hand_1,hand_2)
             else:
-                if hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].suite_int < hand_2[len(hand_1) - 1][len(hand_1[len(hand_1) - 1]) - 1][len(hand_1[len(hand_1) - 1][len(hand_1[len(hand_1) - 1])-1]) - 1].suite_int:
+                if not (ref_1.low_ace and ref_2.low_ace):
+                    if hand_1[-1][-1][-1].suite_int < hand_2[-1][-1][-1].suite_int:
+                        return True
+                else:
+                    if hand_1[-1][-2][-1].suite_int < hand_2[-1][-2][-1].suite_int:
                         return True
         return False
             
@@ -198,8 +220,10 @@ class Hand:
     def __init__(self):
         self.hand = []
         self.value = 0
+        self.value_str = None
         self.sorted = None
         self.groups = None
+        self.low_ace = False
     def deal(self, card):
         self.hand.append(card)
     def sort(self):
@@ -244,12 +268,24 @@ class Hand:
         self.groups = temp
         
 table = Poker_Table()
-#if len(sys.argv) == 2:
-    #table.input()
-table.print_deck(13)
-table.deal()
+print("*** P O K E R  H A N D  A N A L Y Z E R ***")
+if len(sys.argv) == 2:
+    print("*** USING TEST DECK OF CARDS ***")
+    table.input_hands()
+else:
+    print("*** USING RANDOMIZED DECK OF CARDS ***")
+    print("*** Shuffled 52 card deck:")
+    table.print_deck(13)
+    table.deal()
+print("*** Here are the six hands...")
 table.print_hands()
-table.print_deck()
-table.rank_hands()
-table.order_hands()
-table.print_hands()
+if not table.duplicate:
+    print("*** Here is what remains in the deck...")
+    table.print_deck()
+    print("--- WINNING HAND ORDER ---")
+    table.rank_hands()
+    table.order_hands()
+    table.print_hands()
+else:
+    print("*** ERROR - DUPLICATED CARD FOUND IN DECK ***")
+    print("*** DUPLICATE: ",table.duplicate.face,table.duplicate.suite," ***", sep="")
