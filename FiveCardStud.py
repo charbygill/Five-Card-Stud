@@ -53,7 +53,14 @@ class Poker_Table:
                             self.deck.pop(self.deck.index(search_card))
                             found = True
                     if not found:
-                        self.duplicate = new_card
+                        if not self.duplicate:
+                            self.duplicate = Hand()
+                        duplicated = False
+                        for card in self.duplicate:
+                            if card.face_int == new_card.face_int and card.suite_int == new_card.suite_int):
+                                duplicated = True
+                        if not duplicated:
+                            self.duplicate.hand.append(new_card)
     def input_card(self, face, suite):
         if face == "A":
             face_int = 14
@@ -95,6 +102,7 @@ class Poker_Table:
                 print(card.face, card.suite, sep='', end=' ')
             if not hand.value == 0:
                 print("---", hand.value_str)
+            print()
         print('\n')
     def rank_hands(self):
         for hand in self.hands:
@@ -237,6 +245,10 @@ class Hand:
                 if sorted_hand[j].face_int > sorted_hand[j + 1].face_int:
                     swapped = True
                     sorted_hand[j], sorted_hand[j + 1] = sorted_hand[j + 1], sorted_hand[j]
+                elif sorted_hand[j].face_int == sorted_hand[j + 1].face_int:
+                    if sorted_hand[j].suite_int > sorted_hand[j + 1].suite_int:
+                        swapped = True
+                        sorted_hand[j], sorted_hand[j + 1] = sorted_hand[j + 1], sorted_hand[j]
             if not swapped:
                 return sorted_hand
         return sorted_hand
@@ -287,5 +299,9 @@ if not table.duplicate:
     table.order_hands()
     table.print_hands()
 else:
-    print("*** ERROR - DUPLICATED CARD FOUND IN DECK ***")
-    print("*** DUPLICATE: ",table.duplicate.face,table.duplicate.suite," ***", sep="")
+    print("*** ERROR - DUPLICATED CARD(S) FOUND IN DECK ***")
+    print("*** DUPLICATE(S): ", sep="", end="")
+    table.duplicate.sort()
+    for card in table.duplicate.hand:
+        print(card.face,card.suite, sep=" ", end="")
+    print(" ***")
